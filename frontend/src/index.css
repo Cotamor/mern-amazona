@@ -15,13 +15,22 @@ main {
   flex: 1;
 }
 
+.btn-primary {
+  background-color: #f0c040;
+  color: #000000;
+}
+
 .products {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.product {
+.rating span {
+  color: #ffc000;
+}
+
+/* .product {
   border: 1px #404040 solid;
   margin: 1rem;
 }
@@ -33,4 +42,4 @@ main {
 
 .product-info {
   padding: 1rem;
-}
+} */
