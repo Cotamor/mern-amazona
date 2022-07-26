@@ -26,4 +26,7 @@
    - npm install morgan(backend logger)
    - use state hook
    - use effect hook
-   - use reducer hook
+9. Manage State by Reducer
+   - define reducer
+   - update fetch data
+   - get state from useReducer
