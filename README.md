@@ -20,3 +20,10 @@
    - npm i nodemon --save-dev
    - npm i dotenv
    - create server.js
+8. Fetch Products From Backend
+   - set proxy in package.json
+   - npm install axios
+   - npm install morgan(backend logger)
+   - use state hook
+   - use effect hook
+   - use reducer hook
