@@ -49,3 +49,6 @@
     - define reducer
     - store provider
     - implement add to cart button
+15. Complete Add to Cart
+    - check exist item in the cart
+    - check count in stock in backend
