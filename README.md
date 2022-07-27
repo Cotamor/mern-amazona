@@ -41,3 +41,6 @@
     - npm install react-helmet-async
     - fetch product from backend
     - create 3 columns for image, info and action
+13. Create Loading and Message Component
+    - create Loading, Spinner, Message components
+    - create utils.js to define getError function
