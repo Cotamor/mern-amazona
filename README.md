@@ -44,3 +44,8 @@
 13. Create Loading and Message Component
     - create Loading, Spinner, Message components
     - create utils.js to define getError function
+14. React Context for add item to cart
+    - createContext
+    - define reducer
+    - store provider
+    - implement add to cart button
