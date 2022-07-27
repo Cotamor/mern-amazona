@@ -37,3 +37,7 @@
 11. Create Product and Rating Component
     - create Product & Rating component
     - add fontawesome CDN
+12. Create Product Details Screen
+    - npm install react-helmet-async
+    - fetch product from backend
+    - create 3 columns for image, info and action

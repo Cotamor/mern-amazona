@@ -18,6 +18,7 @@ main {
 .btn-primary {
   background-color: #f0c040;
   color: #000000;
+  border: none;
 }
 
 .products {
