@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Row, Col, ListGroup, Card, Image, Button } from 'react-bootstrap'
+import { Row, Col, ListGroup, Card, Button } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { Store } from '../Store'
 import MessageBox from '../components/MessageBox'
