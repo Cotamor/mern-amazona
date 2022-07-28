@@ -4,6 +4,8 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import connectDB from './config/db.js'
+import productRouter from './routes/productRoutes.js'
+import seedRouter from './routes/seederRoutes.js'
 
 dotenv.config()
 
@@ -15,32 +17,10 @@ const app = express()
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
-// @desc   Get all products
-// @access Public
-app.get('/api/products', (req, res) => {
-  res.send(data.products)
-  // res.status(404).send({ message: 'Test Error' })
-})
-// @desc   Get single product
-// @access Public
-app.get('/api/products/slug/:slug', (req, res) => {
-  const product = data.products.find((x) => x.slug === req.params.slug)
-  if (product) {
-    res.send(product)
-  } else {
-    res.status(404).send({ message: 'Product Not Found' })
-  }
-})
-// @desc   Get product by id
-// @access Public
-app.get('/api/products/:id', (req, res) => {
-  const product = data.products.find((x) => x._id === req.params.id)
-  if (product) {
-    res.send(product)
-  } else {
-    res.status(404).send({ message: 'Product Not Found' })
-  }
-})
+// Only using for creating sample data
+app.use('/api/seed', seedRouter)
+// routes
+app.use('/api/products', productRouter)
 
 const port = process.env.PORT || 8000
 
