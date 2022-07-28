@@ -63,3 +63,8 @@
 18. Create Signin Screen
     - create sign in form
     - get query param with URLSearchParams and useLocation
+19. Connect To MongoDB Database
+    - create atlas mongodb database
+    - install local mongodb database
+    - npm install mongoose
+    - connect to mongodb database

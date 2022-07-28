@@ -1,9 +1,14 @@
 import express from 'express'
 import data from './data.js'
+import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
+import connectDB from './config/db.js'
 
 dotenv.config()
+
+// Connect to database
+connectDB()
 
 const app = express()
 
