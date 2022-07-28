@@ -31,6 +31,10 @@ main {
   color: #ffc000;
 }
 
+.img-thumbnail {
+  height: 80px;
+}
+
 /* .product {
   border: 1px #404040 solid;
   margin: 1rem;

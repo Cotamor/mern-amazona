@@ -52,4 +52,11 @@
 15. Complete Add to Cart
     - check exist item in the cart
     - check count in stock in backend
-16. Create Cart Screen - create 2 columns - display item list - create action column
+16. Create Cart Screen
+    - create 2 columns
+    - display item list
+    - create action column
+17. Complete Cart Screen
+    - click handler for inc/dec item
+    - click handler for remove item
+    - click handler for checkout

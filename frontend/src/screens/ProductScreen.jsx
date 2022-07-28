@@ -31,14 +31,15 @@ const reducer = (state, action) => {
 }
 
 const ProductScreen = () => {
+  const navigate = useNavigate()
+  const params = useParams()
+  const { slug } = params
+
   const [{ loading, error, product }, dispatch] = useReducer(reducer, {
     product: {},
     loading: true,
     error: '',
   })
-  const navigate = useNavigate()
-  const params = useParams()
-  const { slug } = params
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,7 +119,11 @@ const ProductScreen = () => {
                   </Col>
                 </Row>
               </ListGroup.Item>
-              {product.countInStock > 0 && (
+              {product.countInStock === 0 ? (
+                <Button variant="light" disabled>
+                  Out of Stock
+                </Button>
+              ) : (
                 <ListGroup.Item>
                   <div className="d-grid">
                     <Button variant="primary" onClick={addToCartHandler}>
