@@ -73,3 +73,6 @@
     - create seed route
     - use route in server.js
     - seed sample product(go to url 'http://localhost:5000/api/seed')
+21. Seed Sample Users
+    - create user model
+    - seed sample users
