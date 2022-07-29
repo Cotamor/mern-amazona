@@ -72,7 +72,7 @@
     - create Product model
     - create seed route
     - use route in server.js
-    - seed sample product(go to url 'http://localhost:5000/api/seed')
+    - seed sample product
 21. Seed Sample Users
     - create user model
     - seed sample users
@@ -94,3 +94,6 @@
     - handle submit
     - create backend api
     - still room for improvement(error msg for dup emai)
+26. Implement Select Payment Method Screen
+    - create input forms
+    - handle submit
