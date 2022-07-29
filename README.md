@@ -85,3 +85,7 @@
     - save token in store and local storage
     - show user name in header
     - npm install react-toastify
+24. Create Shipping Screen
+    - create form inputs
+    - handle save shipping address
+    - add checkout wizard bar

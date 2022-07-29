@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Container, Form, Button, FormGroup } from 'react-bootstrap'
+import { Container, Form, Button } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { useState, useEffect, useContext } from 'react'
 import { Store } from '../Store'
@@ -48,22 +48,22 @@ const SigninScreen = () => {
       </Helmet>
       <h1 className="my-3">Sign In</h1>
       <Form onSubmit={submitHandler}>
-        <FormGroup className="mb-3" controlId="email">
+        <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
             required
             onChange={(e) => setEmail(e.target.value)}
           />
-        </FormGroup>
-        <FormGroup className="mb-3" controlId="password">
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
             required
             onChange={(e) => setPassword(e.target.value)}
           />
-        </FormGroup>
+        </Form.Group>
         <div className="mb-3">
           <Button type="submit">Sign In</Button>
         </div>
