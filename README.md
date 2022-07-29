@@ -89,3 +89,8 @@
     - create form inputs
     - handle save shipping address
     - add checkout wizard bar
+25. Create Signup Screen
+    - create input forms
+    - handle submit
+    - create backend api
+    - still room for improvement(error msg for dup emai)
