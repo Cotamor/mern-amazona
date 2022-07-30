@@ -8,8 +8,7 @@ import { getError } from '../utils'
 import { Store } from '../Store'
 import CheckoutSteps from '../components/CheckoutSteps'
 import LoadingBox from '../components/LoadingBox'
-import logger from 'use-reducer-logger'
-
+// import logger from 'use-reducer-logger'
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -27,7 +26,7 @@ const reducer = (state, action) => {
 const PlaceOrderScreen = () => {
   const navigate = useNavigate()
   // const [state, dispatch] = useReducer(reducer, initialState)
-  const [{ loading }, dispatch] = useReducer(logger(reducer), { loading: false })
+  const [{ loading }, dispatch] = useReducer(reducer, { loading: false })
 
   const { state, dispatch: ctxDispatch } = useContext(Store)
   const { cart, userInfo } = state
@@ -69,7 +68,7 @@ const PlaceOrderScreen = () => {
       ctxDispatch({ type: 'CART_CLEAR' })
       dispatch({ type: 'CREATE_SUCCESS' })
       localStorage.removeItem('cartItems')
-      navigate(`/order/${data.order_id}`)
+      navigate(`/order/${data.order._id}`)
     } catch (err) {
       dispatch({ type: 'CREATE_FAIL' })
       toast.error(getError(err))
