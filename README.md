@@ -99,5 +99,7 @@
     - handle submit
 27. Create Place Order Screen
     - show cart items, payment and address
+    - culculate order summery
+28. Implement Place Order Action
     - handle place order action
     - create order create api

@@ -1,12 +1,34 @@
-import { useEffect, useContext } from 'react'
+import Axios from 'axios'
+import { useEffect, useContext, useReducer } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate } from 'react-router-dom'
 import { Row, Col, Card, Button, ListGroup } from 'react-bootstrap'
+import { toast } from 'react-toastify'
+import { getError } from '../utils'
 import { Store } from '../Store'
 import CheckoutSteps from '../components/CheckoutSteps'
+import LoadingBox from '../components/LoadingBox'
+import logger from 'use-reducer-logger'
+
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'CREATE_REQUEST':
+      return { ...state, loading: true }
+    case 'CREATE_SUCCESS':
+      return { ...state, loading: false }
+    case 'CREATE_FAIL':
+      return { ...state, loading: false }
+    default:
+      return state
+  }
+}
 
 const PlaceOrderScreen = () => {
   const navigate = useNavigate()
+  // const [state, dispatch] = useReducer(reducer, initialState)
+  const [{ loading }, dispatch] = useReducer(logger(reducer), { loading: false })
+
   const { state, dispatch: ctxDispatch } = useContext(Store)
   const { cart, userInfo } = state
 
@@ -24,7 +46,35 @@ const PlaceOrderScreen = () => {
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice
 
   const placeOrderHandler = async () => {
-    // place order
+    try {
+      dispatch({ type: 'CREATE_REQUEST' })
+
+      const { data } = await Axios.post(
+        '/api/orders',
+        {
+          orderItems: cart.cartItems,
+          shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          taxPrice: cart.taxPrice,
+          totalPrice: cart.totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      )
+      ctxDispatch({ type: 'CART_CLEAR' })
+      dispatch({ type: 'CREATE_SUCCESS' })
+      localStorage.removeItem('cartItems')
+      navigate(`/order/${data.order_id}`)
+    } catch (err) {
+      dispatch({ type: 'CREATE_FAIL' })
+      toast.error(getError(err))
+      console.log(err)
+    }
   }
 
   useEffect(() => {
@@ -138,6 +188,7 @@ const PlaceOrderScreen = () => {
                       Place Order
                     </Button>
                   </div>
+                  {loading && <LoadingBox></LoadingBox>}
                 </ListGroup.Item>
               </ListGroup>
             </Card.Body>
