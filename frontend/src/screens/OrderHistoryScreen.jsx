@@ -7,7 +7,6 @@ import { getError } from '../utils'
 import { Button, Table } from 'react-bootstrap'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
-import logger from 'use-reducer-logger'
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -28,7 +27,7 @@ const OrderHistoryScreen = () => {
   const { userInfo } = state
   const navigate = useNavigate()
 
-  const [{ loading, error, orders }, dispatch] = useReducer(logger(reducer), {
+  const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
   })
@@ -59,7 +58,7 @@ const OrderHistoryScreen = () => {
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <Table striped  hover responsive className='table-sm'>
+        <Table striped hover responsive className="table-sm">
           <thead>
             <tr>
               <th>ID</th>
@@ -71,15 +70,25 @@ const OrderHistoryScreen = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order)=>(
+            {orders.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice.toFixed(2)}</td>
-                <td>{order.isPaid ? order.paidAt.substring(0,10): 'No'}</td>
-                <td>{order.isDelivered ? order.deliveredAt.substring(0, 10): 'No'}</td>
+                <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
                 <td>
-                  <Button type='button' variant='light' onClick={()=> navigate(`/order/${order._id}`)}>Details</Button>
+                  {order.isDelivered
+                    ? order.deliveredAt.substring(0, 10)
+                    : 'No'}
+                </td>
+                <td>
+                  <Button
+                    type="button"
+                    variant="light"
+                    onClick={() => navigate(`/order/${order._id}`)}
+                  >
+                    Details
+                  </Button>
                 </td>
               </tr>
             ))}

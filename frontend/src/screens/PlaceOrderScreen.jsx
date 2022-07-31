@@ -8,7 +8,6 @@ import { getError } from '../utils'
 import { Store } from '../Store'
 import CheckoutSteps from '../components/CheckoutSteps'
 import LoadingBox from '../components/LoadingBox'
-// import logger from 'use-reducer-logger'
 
 const reducer = (state, action) => {
   switch (action.type) {
