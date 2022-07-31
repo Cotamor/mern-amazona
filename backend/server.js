@@ -17,6 +17,10 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.get('/api/keys/paypal', (req, res) => {
+  res.send(process.env.PAYPAL_CLIENT_ID || 'sb')
+})
+
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
