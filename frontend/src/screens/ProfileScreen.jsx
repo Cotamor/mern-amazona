@@ -4,7 +4,6 @@ import axios from 'axios'
 import { Store } from '../Store'
 import { getError } from '../utils'
 import { Button, Container, Form } from 'react-bootstrap'
-import logger from 'use-reducer-logger'
 import { toast } from 'react-toastify'
 
 const reducer = (state, action) => {
@@ -25,7 +24,7 @@ const ProfileScreen = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store)
   const { userInfo } = state
 
-  const [{ loadingUpdate }, dispatch] = useReducer(logger(reducer), {
+  const [{ loadingUpdate }, dispatch] = useReducer(reducer, {
     loadingUpdate: false,
   })
   const [name, setName] = useState(userInfo.name)
@@ -66,7 +65,11 @@ const ProfileScreen = () => {
       <Form onSubmit={updateHandler}>
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Name</Form.Label>
-          <Form.Control required value={name} onChange={(e) => setName(e.target.value)} />
+          <Form.Control
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </Form.Group>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
@@ -81,7 +84,6 @@ const ProfileScreen = () => {
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
-          
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
@@ -89,7 +91,6 @@ const ProfileScreen = () => {
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type="password"
-          
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </Form.Group>

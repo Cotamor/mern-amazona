@@ -9,7 +9,6 @@ import { toast } from 'react-toastify'
 import { Store } from '../Store'
 import CheckoutSteps from '../components/CheckoutSteps'
 import LoadingBox from '../components/LoadingBox'
-import logger from 'use-reducer-logger'
 import MessageBox from '../components/MessageBox'
 
 const reducer = (state, action) => {
@@ -43,7 +42,7 @@ const OrderScreen = () => {
 
   // const [state, dispatch] = useReducer(reducer, initialState)
   const [{ loading, error, order, successPay, loadingPay }, dispatch] =
-    useReducer(logger(reducer), {
+    useReducer(reducer, {
       loading: true,
       order: {},
       error: '',
