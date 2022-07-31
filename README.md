@@ -126,3 +126,11 @@
     - show user information
     - create user update api
     - update user info
+33. Publich To Heroku
+    - create and config node project
+    - serve build folder in frontend folder
+    - create heroku account
+    - connect it to github
+    - create mongo atlas database
+    - set database connection in heroku env variables
+    - commit and push
