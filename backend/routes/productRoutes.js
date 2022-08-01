@@ -1,4 +1,5 @@
 import express from 'express'
+import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
 
 const productRouter = express.Router()
@@ -9,6 +10,16 @@ productRouter.get('/', async (req, res) => {
   const products = await Product.find()
   res.send(products)
 })
+
+// @desc   Get products only with certain category
+// @access Public
+productRouter.get(
+  '/categories',
+  asyncHandler(async (req, res) => {
+    const categories = await Product.find().distinct('category')
+    res.send(categories)
+  })
+)
 
 // @desc   Get single product
 // @access Public

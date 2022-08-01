@@ -15,7 +15,7 @@ main {
   flex: 1;
 }
 
-.btn-primary {
+.btn-primary, .btn-outline-primary {
   background-color: #f0c040;
   color: #000000;
   border: none;
@@ -60,3 +60,13 @@ main {
 .product-info {
   padding: 1rem;
 } */
+.navbar-brand {
+  font-weight: bold;
+}
+.offcanvas-title {
+  font-weight: 600;
+}
+.offcanvas .nav-link {
+  font-size: 1.2rem;
+  color: #030303;
+}
