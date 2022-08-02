@@ -137,3 +137,7 @@
 34. Add Sidebar and Search Screen
     - add sidebar(Offcanvas)
     - add search box
+35. Create Search Screen
+    - show filters
+    - create api for search products
+    - display results

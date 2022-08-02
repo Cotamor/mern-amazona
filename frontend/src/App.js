@@ -27,6 +27,7 @@ import ProfileScreen from './screens/ProfileScreen'
 import axios from 'axios'
 import { getError } from './utils'
 import SearchBox from './components/SearchBox'
+import SearchScreen from './screens/SearchScreen'
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store)
@@ -48,6 +49,7 @@ function App() {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get(`/api/products/categories`)
+        console.log(data)
         setCategories(data)
       } catch (err) {
         toast.error(getError(err))
@@ -74,7 +76,7 @@ function App() {
               </LinkContainer>
 
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav" >
+              <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
                 <Nav className="me-auto w-100 justify-content-end">
                   <Link to="/cart" className="nav-link">
@@ -148,6 +150,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomeScreen />} />
               <Route path="/cart" element={<CartScreen />} />
+              <Route path="/search" element={<SearchScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
               <Route path="/profile" element={<ProfileScreen />} />

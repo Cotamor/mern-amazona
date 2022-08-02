@@ -15,7 +15,8 @@ main {
   flex: 1;
 }
 
-.btn-primary, .btn-outline-primary {
+.btn-primary,
+.btn-outline-primary {
   background-color: #f0c040;
   color: #000000;
   border: none;
@@ -69,4 +70,7 @@ main {
 .offcanvas .nav-link {
   font-size: 1.2rem;
   color: #030303;
+}
+.text-bold {
+  font-weight: bold;
 }
