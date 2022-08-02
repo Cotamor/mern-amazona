@@ -149,3 +149,7 @@
     - create dashboard ui
     - implement dashboard api
     - connect ui to backend
+38. Manage Products
+    - create products list ui
+    - implement backend api
+    - fetch data
