@@ -99,7 +99,7 @@
     - handle submit
 27. Create Place Order Screen
     - show cart items, payment and address
-    - culculate order summery
+    - culculate order summary
 28. Implement Place Order Action
     - handle place order action
     - create order create api
@@ -145,3 +145,7 @@
     - define protected route component
     - define admin route component
     - add menu for admin in header
+37. Create Dashboard Screen
+    - create dashboard ui
+    - implement dashboard api
+    - connect ui to backend
