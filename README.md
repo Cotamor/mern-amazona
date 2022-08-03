@@ -164,3 +164,8 @@
 41. Implement Update Product
     - create edit product backend api
     - handle update click
+42. Upload Product Image
+    - create cloudinary account
+    - use the api key in env file
+    - handle upload file
+    - implement backend api to upload
