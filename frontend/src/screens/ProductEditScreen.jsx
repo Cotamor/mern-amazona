@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Store } from '../Store'
 import { Helmet } from 'react-helmet-async'
 import { Form, Button } from 'react-bootstrap'
 import { useReducer } from 'react'
 import axios from 'axios'
 import { getError } from '../utils'
+import { toast } from 'react-toastify'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
 
@@ -32,9 +33,11 @@ const ProductEditScreen = () => {
   const params = useParams() // /product/:id
   const { id: productId } = params
 
+  const navigate = useNavigate()
+
   const { state } = useContext(Store)
   const { userInfo } = state
-  const [{ loading, error }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
   })
@@ -69,9 +72,34 @@ const ProductEditScreen = () => {
     fetchData()
   }, [productId])
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault()
-    console.log('submit')
+    try {
+      dispatch({ type: 'UPDATE_REQUEST' })
+      await axios.put(
+        `/api/products/${productId}`,
+        {
+          _id: productId,
+          name,
+          slug,
+          price,
+          image,
+          category,
+          brand,
+          countInStock,
+          description,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      )
+      dispatch({ type: 'UPDATE_SUCCESS' })
+      toast.success('Product updated successfully')
+      navigate('/admin/products')
+    } catch (err) {
+      toast.error(getError(err))
+      dispatch({ type: 'UPDATE_FAIL' })
+    }
   }
 
   return (
@@ -168,9 +196,10 @@ const ProductEditScreen = () => {
             </Form.Group>
 
             <div className="d-grid mb-3">
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="primary" disabled={loadingUpdate}>
                 Update
               </Button>
+              {loadingUpdate && <LoadingBox></LoadingBox>}
             </div>
           </Form>
         </div>
