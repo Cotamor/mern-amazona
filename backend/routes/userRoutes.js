@@ -97,11 +97,47 @@ userRouter.delete(
     const user = await User.findById(req.user._id)
     if (user) {
       if (user.email === 'admin@example.com') {
-        res.status(400).send({message: 'Can Not Delete Admin User'})
+        res.status(400).send({ message: 'Can Not Delete Admin User' })
         return
       }
       await user.remove()
       res.send({ message: 'User is deleted successfully' })
+    } else {
+      res.status(404).send({ message: 'User Not Found' })
+    }
+  })
+)
+// @desc   Get single user
+// @access Private / Admin
+userRouter.get(
+  '/:id',
+  isAuth,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id)
+    if (user) {
+      res.send(user)
+    } else {
+      res.status(404).send({ message: 'User Not Found' })
+    }
+  })
+)
+
+// @desc   Update user info
+// @access Private / Admin
+userRouter.put(
+  '/:id',
+  isAuth,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id)
+    if (user) {
+      user.name = req.body.name || user.name
+      user.email = req.body.email || user.email
+      // @fix How to prevent admin from editting his or her own isAdmin
+      user.isAdmin = Boolean(req.body.isAdmin)
+      const updatedUser = await user.save()
+      res.send({ message: 'User Updated', user: updatedUser })
     } else {
       res.status(404).send({ message: 'User Not Found' })
     }

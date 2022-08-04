@@ -5,6 +5,7 @@ import { Store } from '../Store'
 import { getError } from '../utils'
 import { Button, Container, Form } from 'react-bootstrap'
 import { toast } from 'react-toastify'
+import LoadingBox from '../components/LoadingBox'
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -30,6 +31,7 @@ const ProfileScreen = () => {
   const [name, setName] = useState(userInfo.name)
   const [email, setEmail] = useState(userInfo.email)
   const [password, setPassword] = useState('')
+  // eslint-disable-next-line
   const [confirmPassword, setConfirmPassword] = useState('')
 
   const updateHandler = async (e) => {
@@ -94,6 +96,7 @@ const ProfileScreen = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </Form.Group>
+        {loadingUpdate && <LoadingBox></LoadingBox>}
         <div className="mb-3">
           <Button type="submit">Update</Button>
         </div>

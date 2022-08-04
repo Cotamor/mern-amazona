@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useContext, useEffect, useReducer } from 'react'
 import { Button, Table } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Store } from '../Store'
 import { getError } from '../utils'
 import { toast } from 'react-toastify'
@@ -31,7 +31,7 @@ const reducer = (state, action) => {
 }
 
 const UserListScreen = () => {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const { state } = useContext(Store)
   const { userInfo } = state
 
@@ -96,7 +96,6 @@ const UserListScreen = () => {
               <th>EMAIL</th>
               <th>IS ADMIN</th>
               <th>ACTIONS</th>
-              
             </tr>
           </thead>
           <tbody>
@@ -105,13 +104,13 @@ const UserListScreen = () => {
                 <td>{user._id}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>{user.isAdmin ?  'Admin' : 'Not Admin'}</td>
-                
+                <td>{user.isAdmin ? 'Yes' : 'No'}</td>
+
                 <td>
                   <Button
                     type="button"
                     variant="light"
-                    // implement later
+                    onClick={() => navigate(`/admin/user/${user._id}`)}
                   >
                     Edit
                   </Button>

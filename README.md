@@ -191,3 +191,10 @@
     - handle click action
     - implement backend api for get all user and delete user
     - fetch and display users
+48. Edit User
+    - create edit button
+    - create edit user ui
+    - display user info in the input boxes
+    - implement backend api
+    - handle edit click
+    - warning(need implement fail safe functionality for isAdmin edit)
