@@ -7,6 +7,8 @@ import { isAuth, isAdmin } from '../utils.js'
 
 const orderRouter = express.Router()
 
+// @desc   Get all orders
+// @access Private / Admin
 orderRouter.get(
   '/',
   isAuth,
@@ -17,6 +19,8 @@ orderRouter.get(
   })
 )
 
+// @desc   Create new order
+// @access Private
 orderRouter.post(
   '/',
   isAuth,
@@ -37,6 +41,8 @@ orderRouter.post(
   })
 )
 
+// @desc   Get order summary for dashboard
+// @access Private / Admin
 orderRouter.get(
   '/summary',
   isAuth,
@@ -84,6 +90,8 @@ orderRouter.get(
   })
 )
 
+// @desc   Get current user's order
+// @access Private
 orderRouter.get(
   '/mine',
   isAuth,
@@ -93,6 +101,8 @@ orderRouter.get(
   })
 )
 
+// @desc   Get order by id
+// @access Private
 orderRouter.get(
   '/:id',
   isAuth,
@@ -106,6 +116,8 @@ orderRouter.get(
   })
 )
 
+// @desc   Update order to be paid
+// @access Private
 orderRouter.put(
   '/:id/pay',
   isAuth,
@@ -123,6 +135,26 @@ orderRouter.put(
 
       const updatedOrder = await order.save()
       res.send({ message: 'Order Paid', order: updatedOrder })
+    } else {
+      res.status(404).send({ message: 'Order Not Fount' })
+    }
+  })
+)
+
+// @desc   Update order to be delivered
+// @access Private / Admin
+orderRouter.put(
+  '/:id/deliver',
+  isAuth,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id)
+    if (order) {
+      order.isDelivered = true
+      order.deliveredAt = Date.now()
+
+      await order.save()
+      res.send({ message: 'Order Delivered' })
     } else {
       res.status(404).send({ message: 'Order Not Fount' })
     }

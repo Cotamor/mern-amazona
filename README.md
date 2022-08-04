@@ -177,3 +177,7 @@
     - create order list screen
     - implement backend api
     - fetch and display orders
+45. Deliver-Order
+    - add deliver button
+    - handle click action
+    - implement backend api for deliver

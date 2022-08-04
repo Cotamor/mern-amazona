@@ -3,13 +3,14 @@ import { useEffect, useContext, useReducer } from 'react'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Row, Col, Card, ListGroup } from 'react-bootstrap'
+import { Row, Col, Card, ListGroup, Button } from 'react-bootstrap'
 import { getError } from '../utils'
 import { toast } from 'react-toastify'
 import { Store } from '../Store'
 import CheckoutSteps from '../components/CheckoutSteps'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
+import axios from 'axios'
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -27,6 +28,14 @@ const reducer = (state, action) => {
       return { ...state, loadingPay: false }
     case 'PAY_RESET':
       return { ...state, loadingPay: false, successPay: false }
+    case 'DELIVER_REQUEST':
+      return { ...state, loadingDeliver: true }
+    case 'DELIVER_SUCCESS':
+      return { ...state, loadingDeliver: false, successDeliver: true }
+    case 'DELIVER_FAIL':
+      return { ...state, loadingDeliver: false }
+    case 'DELIVER_RESET':
+      return { ...state, loadingDeliver: false, successDeliver: false }
     default:
       return state
   }
@@ -41,17 +50,27 @@ const OrderScreen = () => {
   const navigate = useNavigate()
 
   // const [state, dispatch] = useReducer(reducer, initialState)
-  const [{ loading, error, order, successPay, loadingPay }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      order: {},
-      error: '',
-      successPay: false,
-      loadingPay: false,
-    })
+  const [
+    {
+      loading,
+      error,
+      order,
+      successPay,
+      loadingPay,
+      loadingDeliver,
+      successDeliver,
+    },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    order: {},
+    error: '',
+    successPay: false,
+    loadingPay: false,
+  })
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
-
+  //Reference to Offical docs (PayPalButtons example)
   function createOrder(data, actions) {
     return actions.order
       .create({
@@ -107,10 +126,18 @@ const OrderScreen = () => {
       navigate('/signin')
       return
     }
-    if (!order._id || successPay || (order._id && order._id !== id)) {
+    if (
+      !order._id ||
+      successPay ||
+      successDeliver ||
+      (order._id && order._id !== id)
+    ) {
       fetchOrder()
       if (successPay) {
         dispatch({ type: 'PAY_RESET' })
+      }
+      if (successDeliver) {
+        dispatch({ type: 'DELIVER_RESET' })
       }
     } else {
       const loadPaypalScript = async () => {
@@ -128,7 +155,33 @@ const OrderScreen = () => {
       }
       loadPaypalScript()
     }
-  }, [order, userInfo, id, navigate, paypalDispatch, successPay])
+  }, [
+    order,
+    userInfo,
+    id,
+    navigate,
+    paypalDispatch,
+    successPay,
+    successDeliver,
+  ])
+
+  const deliverOrderHandler = async () => {
+    try {
+      dispatch({ type: 'DELIVER_REQUEST' })
+      await axios.put(
+        `/api/orders/${order._id}/deliver`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      )
+      dispatch({ type: 'DELIVER_SUCCESS' })
+      toast.success('Order is delivered')
+    } catch (err) {
+      toast.error(getError(err))
+      dispatch({ type: 'DELIVER_FAIL' })
+    }
+  }
 
   const addDicimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2)
@@ -261,6 +314,16 @@ const OrderScreen = () => {
                       </div>
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}
+                  </ListGroup.Item>
+                )}
+                {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                  <ListGroup.Item>
+                    {loadingDeliver && <LoadingBox></LoadingBox>}
+                    <div className="d-grid">
+                      <Button type="button" onClick={deliverOrderHandler}>
+                        Deliver Order
+                      </Button>
+                    </div>
                   </ListGroup.Item>
                 )}
               </ListGroup>
