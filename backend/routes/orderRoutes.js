@@ -7,6 +7,16 @@ import { isAuth, isAdmin } from '../utils.js'
 
 const orderRouter = express.Router()
 
+orderRouter.get(
+  '/',
+  isAuth,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const orders = await Order.find().populate('user', 'name')
+    res.send(orders)
+  })
+)
+
 orderRouter.post(
   '/',
   isAuth,
@@ -59,6 +69,7 @@ orderRouter.get(
           sales: { $sum: '$totalPrice' },
         },
       },
+      { $sort: { _id: 1 } },
     ])
 
     const productCategories = await Product.aggregate([
