@@ -2,10 +2,24 @@ import express from 'express'
 import bcrypt from 'bcryptjs'
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
-import { generateToken, isAuth } from '../utils.js'
+import { generateToken, isAuth, isAdmin } from '../utils.js'
 
 const userRouter = express.Router()
-// User Sign in
+
+// @desc   Get all users
+// @access Private / Admin
+userRouter.get(
+  '/',
+  isAuth,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const users = await User.find({})
+    res.send(users)
+  })
+)
+
+// @desc   Sign in user
+// @access Public
 userRouter.post(
   '/signin',
   asyncHandler(async (req, res) => {
@@ -25,7 +39,8 @@ userRouter.post(
     res.status(401).send({ message: 'Invalid email or password' })
   })
 )
-// User Sign up
+// @desc   Sign up user
+// @access Public
 userRouter.post(
   '/signup',
   asyncHandler(async (req, res) => {
@@ -44,7 +59,8 @@ userRouter.post(
     })
   })
 )
-
+// @desc   Update user profile
+// @access Private
 userRouter.put(
   '/profile',
   isAuth,
@@ -65,6 +81,27 @@ userRouter.put(
         isAdmin: updatedUser.isAdmin,
         token: generateToken(updatedUser),
       })
+    } else {
+      res.status(404).send({ message: 'User Not Found' })
+    }
+  })
+)
+
+// @desc   Delete user
+// @access Private / Admin
+userRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id)
+    if (user) {
+      if (user.email === 'admin@example.com') {
+        res.status(400).send({message: 'Can Not Delete Admin User'})
+        return
+      }
+      await user.remove()
+      res.send({ message: 'User is deleted successfully' })
     } else {
       res.status(404).send({ message: 'User Not Found' })
     }

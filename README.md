@@ -185,3 +185,9 @@
     - add delete button
     - handle click action
     - implement backend api for delete
+47. List Users & Delete User
+    - create user list screen
+    - add delete button
+    - handle click action
+    - implement backend api for get all user and delete user
+    - fetch and display users
