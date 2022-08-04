@@ -62,6 +62,24 @@ productRouter.put(
   })
 )
 
+// @desc   Delete product
+// @access Private / Admin
+productRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  asyncHandler(async (req, res) => {
+    const productId = req.params.id
+    const product = await Product.findById(productId)
+    if (product) {
+      await product.remove()
+      res.send({ message: 'Product Deleted' })
+    } else {
+      res.status(404).send({ message: 'Product Not Found' })
+    }
+  })
+)
+
 // @desc   Get products
 // @access Private / Admin
 productRouter.get(
