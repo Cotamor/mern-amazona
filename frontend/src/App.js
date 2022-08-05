@@ -36,10 +36,11 @@ import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
 import UserListScreen from './screens/UserListScreen'
 import UserEditScreen from './screens/UserEditScreen'
+import MapScreen from './screens/MapScreen'
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store)
-  const { cart, userInfo } = state
+  const { cart, userInfo, fullBox } = state
 
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' })
@@ -68,7 +69,13 @@ function App() {
 
   return (
     <Router>
-      <div className="d-flex flex-column site-container">
+      <div
+        className={
+          fullBox
+            ? 'd-flex flex-column site-container full-box'
+            : 'd-flex flex-column site-container'
+        }
+      >
         <ToastContainer position="bottom-center" limit={1} />
         <header className="App-header">
           <Navbar bg="dark" variant="dark" expand="lg">
@@ -182,6 +189,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ProfileScreen />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/map"
+                element={
+                  <ProtectedRoute>
+                    <MapScreen />
                   </ProtectedRoute>
                 }
               />

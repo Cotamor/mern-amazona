@@ -198,3 +198,11 @@
     - implement backend api
     - handle edit click
     - warning(need implement fail safe functionality for isAdmin edit)
+49. Choose Address on Google Map
+    - create google map credentials
+    - create api to send google api to frontend
+    - create map screen
+    - fetch google api
+    - getUserLocation
+    - install @react-google-maps/api
+    - use it in shipping screen

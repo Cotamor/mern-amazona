@@ -210,6 +210,13 @@ const OrderScreen = () => {
                 {order.shippingAddress.address}, {order.shippingAddress.city},{' '}
                 {order.shippingAddress.postalCode},{' '}
                 {order.shippingAddress.country}
+                {/* Google Map */}
+                &nbsp;
+                {order.shippingAddress.location && order.shippingAddress.location.lat && (
+                  <a target='_new' href={
+                    `https://maps.google.com?q=${order.shippingAddress.location.lat},${order.shippingAddress.location.lng}`
+                  } >Show On Map</a>
+                )}
               </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">
