@@ -3,7 +3,9 @@ import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 import User from '../models/userModel.js'
 import Product from '../models/productModel.js'
-import { isAuth, isAdmin, mailgun, payOrderEmailTemplate } from '../utils.js'
+import formData from 'form-data'
+import Mailgun from 'mailgun.js'
+import { isAuth, isAdmin, payOrderEmailTemplate } from '../utils.js'
 
 const orderRouter = express.Router()
 
@@ -137,23 +139,23 @@ orderRouter.put(
       }
 
       const updatedOrder = await order.save()
+
       // Mailgun functionality
       const messageData = {
         from: `Amazona <support@edasaki39.com>`,
         to: `${order.user.name} <${order.user.email}>`,
         subject: `New order ${order._id}`,
         html: payOrderEmailTemplate(order),
-        // text: 'Testing some Mailgun awesomness!',
       }
-      mailgun()
-        .messages()
-        .send(messageData, (error, body) => {
-          if (error) {
-            console.log(`Error Mailgun: ${error}`)
-          } else {
-            console.log(`Success Mailgun: ${body}`)
-          }
-        })
+      const mailgun = new Mailgun(formData)
+      const mg = mailgun.client({
+        username: 'api',
+        key: process.env.MAILGUN_API_KEY,
+      })
+      mg.messages
+        .create(process.env.MAILGUN_DOMAIN, messageData)
+        .then((msg) => console.log(msg)) // logs response data
+        .catch((err) => console.error(err)) // logs any error
 
       res.send({ message: 'Order Paid', order: updatedOrder })
     } else {
