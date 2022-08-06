@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 import User from '../models/userModel.js'
 import Product from '../models/productModel.js'
-import { isAuth, isAdmin } from '../utils.js'
+import { isAuth, isAdmin, mailgun, payOrderEmailTemplate } from '../utils.js'
 
 const orderRouter = express.Router()
 
@@ -122,7 +122,10 @@ orderRouter.put(
   '/:id/pay',
   isAuth,
   asyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id)
+    const order = await Order.findById(req.params.id).populate(
+      'user',
+      'email name'
+    )
     if (order) {
       order.isPaid = true
       order.paidAt = Date.now()
@@ -134,6 +137,24 @@ orderRouter.put(
       }
 
       const updatedOrder = await order.save()
+      // Mailgun functionality
+      const messageData = {
+        from: `Amazona <support@edasaki39.com>`,
+        to: `${order.user.name} <${order.user.email}>`,
+        subject: `New order ${order._id}`,
+        html: payOrderEmailTemplate(order),
+        // text: 'Testing some Mailgun awesomness!',
+      }
+      mailgun()
+        .messages()
+        .send(messageData, (error, body) => {
+          if (error) {
+            console.log(`Error Mailgun: ${error}`)
+          } else {
+            console.log(`Success Mailgun: ${body}`)
+          }
+        })
+
       res.send({ message: 'Order Paid', order: updatedOrder })
     } else {
       res.status(404).send({ message: 'Order Not Fount' })

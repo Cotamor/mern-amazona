@@ -206,3 +206,10 @@
     - getUserLocation
     - install @react-google-maps/api
     - use it in shipping screen
+50. Email order receipt by mailgun
+    - create mailgum account
+    - add and varify your domain to mailgun
+    - install mailgun-js
+    - set api key in env file
+    - change pay order in orderRouter
+    - send email order receipt
